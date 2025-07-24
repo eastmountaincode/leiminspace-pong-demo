@@ -12,6 +12,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* Fix text rendering artifacts */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
@@ -21,14 +25,34 @@ body {
   overflow: hidden;
   width: 100vw;
   height: 100vh;
+  /* Force hardware acceleration and prevent rendering issues */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Force hardware acceleration for text elements */
+h1, h2, h3, h4, h5, h6, div, span, button {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: auto;
+}
+
+/* Specific fixes for dynamic text content */
+.text-2xl, .text-4xl {
+  transform: translate3d(0, 0, 0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 button {
     cursor: pointer;
+    /* Additional button-specific rendering fixes */
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
-.custom-dashed-border {
-  border-right: none;
+.center-dashed-line {
   background-image: repeating-linear-gradient(
     to bottom,
     transparent,
@@ -38,7 +62,6 @@ button {
     transparent 16px,
     transparent 24px
   );
-  background-size: 3px 100%;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-position: right center;
 }

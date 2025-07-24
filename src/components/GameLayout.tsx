@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
 
-interface GameBoardProps {
-  leftContent: ReactNode;
-  rightContent: ReactNode;
+interface GameLayoutProps {
+  children: ReactNode;
   showResetButton?: boolean;
   onReset?: () => void;
 }
@@ -16,31 +15,27 @@ const startButtonStyles = {
   cursor: 'pointer',
 };
 
-export default function GameBoard({ 
-  leftContent, 
-  rightContent, 
+export default function GameLayout({ 
+  children,
   showResetButton = false, 
   onReset 
-}: GameBoardProps) {
+}: GameLayoutProps) {
   return (
-    <div className="w-full h-screen bg-black text-white flex">
-      {/* Left Side */}
-      <div className="w-1/2 h-full flex flex-col items-center justify-center custom-dashed-border">
-        <div className="text-center">
-          {leftContent}
-        </div>
-      </div>
+    <div className="w-full h-screen bg-black text-white flex relative border-2 border-white">
+      {/* Persistent Dashed Center Line for all modes */}
+      <div 
+        className="absolute top-0 left-1/2 h-full pointer-events-none z-5 center-dashed-line" 
+        style={{
+          width: '3px',
+          marginLeft: '-1.5px' // Center the 3px line
+        }} 
+      />
+      
+      {children}
 
-      {/* Right Side */}
-      <div className="w-1/2 h-full flex flex-col items-center justify-center">
-        <div className="text-center">
-          {rightContent}
-        </div>
-      </div>
-
-      {/* Reset button */}
+      {/* Reset button - conditionally shown */}
       {showResetButton && onReset && (
-        <div className="absolute top-6 right-6">
+        <div className="absolute top-6 right-6 z-10">
           <button
             onClick={onReset}
             className="text-2xl"
