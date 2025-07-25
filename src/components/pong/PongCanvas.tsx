@@ -3,8 +3,9 @@ import { useState, useEffect, useRef } from 'react';
 import Paddle from './Paddle';
 import PaddleControls from './PaddleControls';
 import Scoreboard from './Scoreboard';
-import Ball from './Ball';
 import { Mesh } from 'three';
+import Ball from './Ball';
+
 
 // Component inside Canvas that can access viewport info
 function GameElements({ 

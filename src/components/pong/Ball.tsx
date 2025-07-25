@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import { useTexture } from '@react-three/drei';
 import { Mesh, ShaderMaterial } from 'three';
 
+// forwardRef is React helper that lets a parent component attach a ref to something rendered inside a component.
 const Ball = forwardRef<Mesh>((_props, ref) => {
   // Load heart texture
   const heartTexture = useTexture('/images/leminspace_heart.png');
