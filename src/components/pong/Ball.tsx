@@ -1,7 +1,8 @@
+import { forwardRef } from 'react';
 import { useTexture } from '@react-three/drei';
-import { ShaderMaterial } from 'three';
+import { Mesh, ShaderMaterial } from 'three';
 
-export default function Ball() {
+const Ball = forwardRef<Mesh>((_props, ref) => {
   // Load heart texture
   const heartTexture = useTexture('/images/leminspace_heart.png');
   
@@ -33,8 +34,10 @@ export default function Ball() {
   const ballSize = 0.24;
 
   return (
-    <mesh position={[0, 0, 0]} material={shaderMaterial}>
+    <mesh ref={ref} position={[0, 0, 0]} material={shaderMaterial}>
       <planeGeometry args={[ballSize, ballSize]} />
     </mesh>
   );
-} 
+}); 
+
+export default Ball;

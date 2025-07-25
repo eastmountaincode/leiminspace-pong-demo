@@ -1,9 +1,10 @@
 import { Canvas, useThree } from '@react-three/fiber';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Paddle from './Paddle';
 import PaddleControls from './PaddleControls';
 import Scoreboard from './Scoreboard';
 import Ball from './Ball';
+import { Mesh } from 'three';
 
 // Component inside Canvas that can access viewport info
 function GameElements({ 
@@ -25,6 +26,8 @@ function GameElements({
   
   const responsiveLeftX = -viewport.width / 2 + leftPaddleDistance;
   const responsiveRightX = viewport.width / 2 - rightPaddleDistance;
+
+  const ballRef = useRef<Mesh>(null);
   
   return (
     <>
@@ -38,7 +41,7 @@ function GameElements({
       />
       
       {/* Ball */}
-      <Ball />
+      <Ball ref={ballRef} />
       
       {/* Left paddle (Leimin) - 462x153 -> rotated to 153x462 */}
       <Paddle 

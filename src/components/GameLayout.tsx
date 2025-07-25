@@ -21,7 +21,7 @@ export default function GameLayout({
   onReset 
 }: GameLayoutProps) {
   return (
-    <div className="w-full h-screen bg-black text-white flex relative border-2 border-white">
+    <div className="w-full h-screen bg-black text-white flex relative">
       {/* Persistent Dashed Center Line for all modes */}
       <div 
         className="absolute top-0 left-1/2 h-full pointer-events-none z-5 center-dashed-line" 
