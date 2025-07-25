@@ -1,6 +1,6 @@
-import { useTexture } from '@react-three/drei';
-import { useRef } from 'react';
+import { forwardRef, Ref } from 'react';
 import { Mesh, ShaderMaterial } from 'three';
+import { useTexture } from '@react-three/drei';
 
 interface PaddleProps {
     position: [number, number, number];
@@ -14,71 +14,75 @@ interface PaddleProps {
     showHitBox?: boolean;
 }
 
-export default function Paddle({
-    position,
-    imageSrc,
-    width,
-    height,
-    hitBoxWidth = width * 0.8,
-    hitBoxHeight = height * 0.9,
-    hitBoxOffsetX = 0,
-    hitBoxOffsetY = 0,
-    showHitBox = true
-}: PaddleProps) {
-    const meshRef = useRef<Mesh>(null);
+/**
+ * The forwarded ref points to the GREEN hit‑box mesh,
+ * not to the larger textured sprite.
+ */
+const Paddle = forwardRef(function Paddle(
+    {
+        position,
+        imageSrc,
+        width,
+        height,
+        hitBoxWidth = width * 0.8,
+        hitBoxHeight = height * 0.9,
+        hitBoxOffsetX = 0,
+        hitBoxOffsetY = 0,
+        showHitBox = true
+    }: PaddleProps,
+    ref: Ref<Mesh>      // 🔑 parent will receive this
+) {
     const texture = useTexture(imageSrc);
 
-    // Custom shader to invert black text to white
-    const shaderMaterial = new ShaderMaterial({
-        uniforms: {
-            map: { value: texture }
-        },
+    /* ---------- visual sprite (no ref here) ---------- */
+    const spriteMat = new ShaderMaterial({
+        uniforms: { map: { value: texture } },
         vertexShader: `
-      varying vec2 vUv;
-      void main() {
-        vUv = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `,
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `,
         fragmentShader: `
-      uniform sampler2D map;
-      varying vec2 vUv;
-      void main() {
-        vec4 texColor = texture2D(map, vUv);
-        // Invert the RGB values, keep alpha
-        gl_FragColor = vec4(1.0 - texColor.rgb, texColor.a);
-      }
-    `,
+            uniform sampler2D map;
+            varying vec2 vUv;
+            void main() {
+                vec4 tex = texture2D(map, vUv);
+                gl_FragColor = vec4(1.0 - tex.rgb, tex.a);
+            }
+        `,
         transparent: true
     });
 
-    // Calculate hit box dimensions after rotation (since paddle is rotated 90 degrees)
-    const hitBoxDisplayWidth = hitBoxHeight / 200; // Height becomes width after rotation
-    const hitBoxDisplayHeight = hitBoxWidth / 200; // Width becomes height after rotation
+    /* convert pixel dims → world units (image is rotated 90°) */
+    const hitW = hitBoxHeight / 200;  // becomes width after rotation
+    const hitH = hitBoxWidth  / 200;  // becomes height after rotation
 
     return (
         <group position={position}>
-            {/* Paddle mesh */}
-            <mesh ref={meshRef} rotation={[0, 0, Math.PI / 2]} material={shaderMaterial}>
-                {/* Create a plane geometry sized to match the rotated image */}
+            {/* 1. Textured paddle image — purely visual */}
+            <mesh rotation={[0, 0, Math.PI / 2]} material={spriteMat}>
                 <planeGeometry args={[height / 200, width / 200]} />
             </mesh>
 
-            {/* Hit box */}
-
+            {/* 2. Custom hit‑box — this gets the forwarded ref */}
             <mesh
+                ref={ref}                          /* 🔑 forwarded here */
                 rotation={[0, 0, Math.PI / 2]}
                 position={[hitBoxOffsetX, hitBoxOffsetY, 0.005]}
+                visible={showHitBox}               /* toggle outline */
             >
-                <boxGeometry args={[hitBoxDisplayWidth, hitBoxDisplayHeight, 0.01]} />
+                <boxGeometry args={[hitW, hitH, 0.1]} />
                 <meshBasicMaterial
                     color="#00ff00"
-                    wireframe={true}
-                    transparent={true}
-                    opacity={0.2}
+                    wireframe
+                    transparent
+                    opacity={0.3}
                 />
             </mesh>
-
         </group>
     );
-} 
+});
+
+export default Paddle;
