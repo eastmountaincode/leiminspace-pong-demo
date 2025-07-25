@@ -12,7 +12,23 @@ import IntroContent from '../components/IntroContent';
 import PongCanvas from '../components/pong/PongCanvas';
 import AboutModal from '../components/AboutModal';
 
-export default function PongGame() {
+// Mobile detection component
+function MobileMessage() {
+  return (
+    <div className="w-full h-screen bg-black text-white flex items-center justify-center">
+      <div className="text-center px-6">
+        <div className="text-2xl mt-8 leading-relaxed">
+          PLEASE USE THIS<br />
+          ON DESKTOP FOR<br />
+          BEST EXPERIENCE
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Desktop content wrapper
+function DesktopContent() {
   const [gameState] = useAtom(gameStateAtom);
   const [playerStates] = useAtom(playerStatesAtom);
   const [, resetPlayers] = useAtom(resetPlayersAtom);
@@ -51,6 +67,22 @@ export default function PongGame() {
         isOpen={isAboutModalOpen} 
         onClose={closeAboutModal} 
       />
+    </>
+  );
+}
+
+export default function PongGame() {
+  return (
+    <>
+      {/* Show mobile message on small screens */}
+      <div className="block md:hidden">
+        <MobileMessage />
+      </div>
+      
+      {/* Show desktop content on medium screens and up */}
+      <div className="hidden md:block">
+        <DesktopContent />
+      </div>
     </>
   );
 }
