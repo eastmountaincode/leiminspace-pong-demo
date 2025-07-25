@@ -41,4 +41,6 @@ const Ball = forwardRef<Mesh>((_props, ref) => {
   );
 }); 
 
+Ball.displayName = 'Ball';
+
 export default Ball;

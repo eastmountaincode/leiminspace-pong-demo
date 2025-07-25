@@ -10,6 +10,7 @@ interface BallPhysicsProps {
 }
 
 const SHOW_DEBUG_HELPERS = false;
+const BALL_SPEED = 6.66;
 
 export default function BallPhysics({
     ballRef,
@@ -63,7 +64,7 @@ export default function BallPhysics({
                 const dir = Math.random() < 0.5 ? -1 : 1;
                 const randomY = (Math.random() * 2 - 1) * 1.5;
                 //vel.current.set(1.0 * dir, randomY, 0); // temporary slower velocity for testing
-                vel.current.set(4.20 * dir, randomY, 0);
+                vel.current.set(BALL_SPEED * dir, randomY, 0);
                 isPaused.current = false;
             }, 2000); // 2 second initial delay
             return;
@@ -152,7 +153,7 @@ export default function BallPhysics({
         setTimeout(() => {
             const dir = Math.random() < 0.5 ? -1 : 1;
             const randomY = (Math.random() * 2 - 1) * 1.5; // Reduced random Y for better gameplay
-            vel.current.set(4.20 * dir, randomY, 0);
+            vel.current.set(BALL_SPEED * dir, randomY, 0);
             isPaused.current = false; // Resume movement
         }, 1500); // 1.5 second pause
     };

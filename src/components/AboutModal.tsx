@@ -73,11 +73,11 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
                         CREATED BY:
                     </span>
                     <br />
-                               <a 
-             href="https://andrew-boylan.com" 
-             target="_blank" 
-             rel="noopener noreferrer" 
-             style={{ color: 'white', cursor: 'pointer', fontFamily: 'Bit9x9', display: 'inline-block', paddingTop: '4px', paddingBottom: '4px' }}
+                    <a
+                        href="https://andrew-boylan.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: 'white', cursor: 'pointer', fontFamily: 'Bit9x9', display: 'inline-block', paddingTop: '4px', paddingBottom: '4px' }}
                         onMouseEnter={(e) => {
                             const target = e.target as HTMLAnchorElement;
                             target.style.background = 'white';

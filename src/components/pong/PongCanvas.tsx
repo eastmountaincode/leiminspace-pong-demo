@@ -1,5 +1,5 @@
 import { Canvas, useThree } from '@react-three/fiber';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import Paddle from './Paddle';
 import PaddleControls from './PaddleControls';
 import Scoreboard from './Scoreboard';
