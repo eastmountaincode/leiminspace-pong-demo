@@ -8,7 +8,7 @@ import {
 } from '../store/appStateAtoms';
 import GameLayout from '../components/GameLayout';
 import IntroContent from '../components/IntroContent';
-import PongCanvas from '../components/PongCanvas';
+import PongCanvas from '../components/pong/PongCanvas';
 
 export default function PongGame() {
   const [gameState] = useAtom(gameStateAtom);
